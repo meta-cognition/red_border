@@ -1,22 +1,32 @@
 #Persistent
-Menu, Tray, Icon, red.ico
+;Menu, Tray, Icon, red.ico
 
-SetTimer, DrawRect, 50
+SetTimer, DrawRect, 200
 border_thickness = 4
 border_color = FF0000
 
 ;CTRL+SPACE will keep a windows on top
-^SPACE::  Winset, Alwaysontop, , A
+^SPACE:: 
+  soundplay, ding1.wav 
+  Winset, Alwaysontop, , A
+  
+return
 
+F2::
+  DesktopIcons()
+return
 
 DrawRect:
-
+  
 WinGetPos, x, y, w, h, A
 if (x="")
     return
 
 WinGet, isMaxed , MinMax, A
-if (isMaxed=0)
+WinGetClass, winClass
+WinGetTitle, winTitle
+
+if (isMaxed=0 and winClass!="Progman" and winTitle!="Table awaiting Action")
 {
 
   Gui, +Lastfound +AlwaysOnTop +Toolwindow
@@ -65,3 +75,9 @@ if (isMaxed=0)
 }
 
 return
+DesktopIcons(Show:=-1, hWnd:=0) {                    ; By SKAN on D35D @ tiny.cc/desktopicons
+If ! hWnd := DllCall("GetWindow", "Ptr",WinExist("ahk_class Progman"), "UInt",5, "Ptr")
+     hWnd := DllCall("GetWindow", "Ptr",WinExist("ahk_class WorkerW"), "UInt",5, "Ptr")
+If DllCall("IsWindowVisible", "Ptr",DllCall("GetWindow","Ptr",hWnd, "UInt",5, "Ptr")) != Show
+   DllCall("SendMessage","Ptr",hWnd, "Ptr",0x111, "Ptr",0x7402, "Ptr",0)
+}

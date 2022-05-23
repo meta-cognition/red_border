@@ -1,7 +1,7 @@
 #Persistent
-Menu, Tray, Icon, red.ico
+;Menu, Tray, Icon, red.ico
 
-SetTimer, DrawRect, 200
+;SetTimer, DrawRect, 200
 border_thickness = 4
 border_color = FF0000
 
